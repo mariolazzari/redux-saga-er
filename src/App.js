@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCatsFetch } from "./redux/catSlice";
 
 function App() {
-  const { cats } = useSelector(state => state.cat);
+  const { cats, error } = useSelector(state => state.cat);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -14,6 +14,8 @@ function App() {
   return (
     <div className="App">
       <h1>Cats gallery</h1>
+      <h2 className="error">{error}</h2>
+
       <div className="gallery">
         {cats.map(cat => (
           <div key={cat.id} className="row">

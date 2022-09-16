@@ -1,12 +1,18 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { getCatsSuccess } from "./catSlice";
+import { getCatsSuccess, getCatsFailure } from "./catSlice";
+import axios from "axios";
 
 function* workGetCatsFetch() {
-  const cats = yield call(() => fetch("https://api.thecatapi.com/v1/breeds"));
-  const catsJson = yield cats.json();
-  const catsFilter = catsJson.slice(0, 10);
+  try {
+    const { data } = yield call(() =>
+      axios.get("https://api.thecatapi.com/v1/breeds")
+    );
+    const catsFilter = data.slice(0, 10);
 
-  yield put(getCatsSuccess(catsFilter));
+    yield put(getCatsSuccess(catsFilter));
+  } catch (ex) {
+    yield put(getCatsFailure(ex.message));
+  }
 }
 
 function* catSaga() {

@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   cats: [],
   isLoading: false,
+  error: "",
 };
 
 // cat slice
@@ -13,13 +14,17 @@ const catSlice = createSlice({
   reducers: {
     getCatsFetch: state => {
       state.isLoading = true;
+      state.error = "";
     },
     getCatsSuccess: (state, action) => {
       state.cats = action.payload;
       state.isLoading = false;
+      state.error = "";
     },
-    getCatsFailure: state => {
+    getCatsFailure: (state, action) => {
+      state.cats = [];
       state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
