@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCatsFetch } from "./redux/catSlice";
 
 function App() {
+  const { cats } = useSelector(state => state.cat);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCatsFetch());
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Cats gallery</h1>
+      <div className="gallery">
+        {cats.map(cat => (
+          <div key={cat.id} className="row">
+            <div className="column column-left">
+              <img
+                src={cat.image.url}
+                alt={cat.name}
+                width={200}
+                height={200}
+              />
+            </div>
+            <div className="column column-right">
+              <h2>{cat.name}</h2>
+              <h5>{cat.temperament}</h5>
+              <p>{cat.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
